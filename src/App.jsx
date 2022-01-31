@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./App.css";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -9,7 +9,24 @@ import Cart from "./Cart";
 
 
 export default function App() {
+  const [cart, setCart] = useState([]);
 
+  function addToCart(id, sku) {
+    setCart((items) => {
+      const itemInCart = items.find((i) => i.sku === sku);
+      if (itemInCart) {
+        //retorna un nuevo array con matching item replaced
+        //se itera cada eleemnto del array y si se encuentra el item se retorma una copia con la cantidad +1 y sino se encuentra se deja igualß
+        return items.map( (i) => 
+            i.sku === sku ? {...i, quantity: i.quantity +1 } : i 
+          ); 
+        }else{
+          //retorna un nuevo array con el new array appende
+          return [...items, {id, sku, quantity : 1}];
+        }
+     
+    })
+  }
   return (
     <>
       <div className="content">
@@ -18,7 +35,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<h1>Welcome to my store</h1>}></Route>
                 <Route path="/:category" element={<Products />}></Route>
-                <Route path="/:category/:id" element={<Detail />}></Route>
+                <Route path="/:category/:id" element={<Detail addToCart={addToCart} />}></Route>
                 <Route path="/cart" element={<Cart />}></Route>
             </Routes>
              
