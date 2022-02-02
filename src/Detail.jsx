@@ -39,7 +39,7 @@ export default function Detail(props) {
                 disabled={!sku}
                 className="btn btn-primary" 
                 onClick={() => {
-                    props.addToCart(id, sku);
+                    props.dispatch({type: "add", id, sku});
                     navigate("/cart")
                 }}>
                 add to cart
